@@ -1,0 +1,66 @@
+﻿@page
+@model WebApplication1.Pages.LoginModel
+@{
+}
+<form asp-action="Login" method="post" id="login-form">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="LModel.Email"></label>
+        <input asp-for="LModel.Email" class="form-control" />
+        <span asp-validation-for="LModel.Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LModel.Password"></label>
+        <input asp-for="LModel.Password" type="password" class="form-control" />
+        <span asp-validation-for="LModel.Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input asp-for="LModel.RememberMe" />
+        <label asp-for="LModel.RememberMe"></label>
+    </div>
+
+    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" />
+
+    <button type="submit" class="btn btn-primary">Login</button>
+
+    @if (ModelState.ContainsKey(string.Empty))
+    {
+        <div class="alert alert-danger">
+            @ModelState[""].Errors.FirstOrDefault()?.ErrorMessage
+        </div>
+    }
+
+    <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" />
+</form>
+
+@section Scripts {
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfmIdMqAAAAAIF3BPVVRthdMxe-pVYAVG7zZYM5"></script>
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            grecaptcha.ready(function () {
+                grecaptcha.execute('6LfmIdMqAAAAAIF3BPVVRthdMxe-pVYAVG7zZYM5'', { action: 'submit' }).then(function (token) {
+                    document.getElementById("recaptchaToken").value = token;
+                    document.getElementById("registerForm").submit();
+                });
+            });
+        }
+    </script>
+    
+    <script>
+                document.addEventListener("DOMContentLoaded", function () {
+            let inputs = document.querySelectorAll("input[type='text'], input[type='email'], input[type='password'], textarea");
+
+            inputs.forEach(input => {
+                input.addEventListener("input", function () {
+                    this.value = this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                });
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,15 @@
+﻿@page
+@model WebApplication1.Pages.HomeModel
+@{
+}
+<div class="text-center">
+    <h1>Welcome @Model.CurrentUser.FirstName @Model.CurrentUser.LastName</h1>
+    <p>Credit Card: @Model.DecryptedCreditCard</p>
+    <p>Mobile No: @Model.CurrentUser.MobileNo</p>
+    <p>Billing Address: @Model.CurrentUser.BillingAddress</p>
+    <p>Shipping Address: @Model.CurrentUser.ShippingAddress</p>
+    <p>Email: @Model.CurrentUser.Email</p>
+    <p>Photo: @Model.CurrentUser.Photo</p>
+    <img src="@Url.Content("~/uploads/" + Model.CurrentUser.Photo)" alt="User Photo" style="width: 150px; height: 150px; "/>
+    <a class="btn btn-primary" asp-page="/ChangePassword">Change Password</a>
+</div>

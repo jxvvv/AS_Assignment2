@@ -1,0 +1,130 @@
+﻿@page
+@model WebApplication1.Pages.RegisterModel
+@{
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center align-items-center">
+
+        <div class="col-sm-12 col-md-12 col-lg-4">
+            <h1 class="mb-3">Register </h1>
+
+            <form method="post" enctype="multipart/form-data" id="registerForm" onsubmit="submitForm(event)">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.FirstName">First Name</label>
+                    <input type="Text" asp-for="RModel.FirstName" class="form-control" />
+                    <span asp-validation-for="RModel.FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.LastName">Last Name</label>
+                    <input type="Text" asp-for="RModel.LastName" class="form-control" />
+                    <span asp-validation-for="RModel.LastName" class="text-danger"></span>
+                </div>
+
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.CreditCard">Credit Card</label>
+                    <input type="Text" asp-for="RModel.CreditCard" class="form-control" />
+                    <span asp-validation-for="RModel.CreditCard" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.MobileNo">Mobile Number</label>
+                    <input type="Text" asp-for="RModel.MobileNo" class="form-control" />
+                    <span asp-validation-for="RModel.MobileNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.BillingAddress">Billing Address</label>
+                    <input type="Text" asp-for="RModel.BillingAddress" class="form-control" />
+                    <span asp-validation-for="RModel.BillingAddress" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.ShippingAddress">Shipping Address</label>
+                    <input type="Text" asp-for="RModel.ShippingAddress" class="form-control" />
+                    <span asp-validation-for="RModel.ShippingAddress" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Photo">Upload Photo</label>
+                    <input type="file" asp-for="RModel.Photo" class="form-control" accept="image/*" />
+                    <span asp-validation-for="RModel.Photo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Email">Email Address</label>
+                    <input type="Text" asp-for="RModel.Email" class="form-control" />
+                    <span asp-validation-for="RModel.Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.Password">Password</label>
+                    <input type="Text" asp-for="RModel.Password" id="tb_password"  class="form-control" />
+                    <span asp-validation-for="RModel.Password" id="lbl_passwordchecker" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="RModel.ConfirmPassword">Confirm Password</label>
+                    <input type="Text" asp-for="RModel.ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="RModel.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <input type="hidden" id="ReCaptchaToken" name="ReCaptchaToken" />
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfmIdMqAAAAAIF3BPVVRthdMxe-pVYAVG7zZYM5"></script>
+    <script>
+        grecaptcha.ready(function () {
+            grecaptcha.execute('your-site-key', { action: 'submit' }).then(function (token) {
+                document.getElementById("ReCaptchaToken").value = token;
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById("tb_password").addEventListener("input", function () {
+            let password = this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            let message = "";
+            let color = "red";
+
+            if (password.length < 12) {
+                message = "Password must be at least 12 characters.";
+            } else if (!/[0-9]/.test(password)) {
+                message = "Password requires at least 1 number.";
+            } else if (!/[A-Z]/.test(password)) {
+                message = "Password requires at least 1 uppercase letter.";
+            } else if (!/[a-z]/.test(password)) {
+                message = "Password requires at least 1 lowercase letter.";
+            } else if (!/[\W_]/.test(password)) {
+                message = "Password requires at least 1 special character.";
+            } else {
+                message = "Excellent!";
+                color = "green";
+            }
+
+            document.getElementById("lbl_passwordchecker").innerText = message;
+            document.getElementById("lbl_passwordchecker").style.color = color;
+        });
+    </script>
+    <script>
+                document.addEventListener("DOMContentLoaded", function () {
+            let inputs = document.querySelectorAll("input[type='text'], input[type='email'], input[type='password'], textarea");
+
+            inputs.forEach(input => {
+                input.addEventListener("input", function () {
+                    this.value = this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                });
+            });
+        });
+
+    </script>
+}
